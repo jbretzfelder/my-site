@@ -2206,13 +2206,6 @@ select.ctrl:focus, input.ctrl:focus { border-color: var(--border-focus); }
             </div>
           </div>
 
-          <!-- Behavioral Scale -->
-          <div id="sn-scale-field">
-            <label class="sn-label">Weekly Attitude / Behavior Scale (1–10)</label>
-            <div style="display:flex;gap:4px;flex-wrap:nowrap;margin-top:4px" id="sn-scale-pills"></div>
-            <div id="sn-scale-desc" style="font-size:11px;color:var(--text-secondary);margin-top:5px;font-style:italic;min-height:16px"></div>
-          </div>
-
           <!-- Interventions -->
           <div>
             <div class="sn-section-title">Therapeutic Interventions Used</div>
@@ -2230,7 +2223,7 @@ select.ctrl:focus, input.ctrl:focus { border-color: var(--border-focus); }
           <div>
             <div class="sn-section-title">Response — Intervention / Progress / Clinical Judgement</div>
             <div class="sentence-hint" style="margin-bottom:6px">✎ Write in complete sentences — pasted verbatim</div>
-            <textarea class="sn-textarea" id="sn-progress" style="min-height:110px" placeholder="Document client's response to interventions, progress toward treatment goals, clinical observations, and judgement. Scale, behavioral patterns, and engagement here." oninput="snState.progress=this.value"></textarea>
+            <textarea class="sn-textarea" id="sn-progress" style="min-height:110px" placeholder="Document client's response to interventions, progress toward treatment goals, clinical observations, and judgement." oninput="snState.progress=this.value"></textarea>
           </div>
 
           <!-- Risk -->
@@ -4951,11 +4944,6 @@ function fillSampleClient() {
   snState.objNext = '4';
   document.getElementById('sn-obj-complete').checked = true;
   snState.objCompleted = true;
-  snState.scale = 6;
-  document.getElementById('sn-scale-pills').querySelectorAll('.risk-pill').forEach((p,i) => {
-    p.classList.toggle('selected', i === 5);
-  });
-  document.getElementById('sn-scale-desc').textContent = SCALE_DESCS[6];
   snState.interventions = ['Motivational Interviewing','CBT — Cognitive Restructuring','Relapse Prevention Planning'];
   document.querySelectorAll('#sn-intervention-chips .sn-chip').forEach(btn => {
     btn.classList.toggle('active', snState.interventions.includes(btn.textContent));
@@ -4984,7 +4972,6 @@ const snState = {
   clientName:'', date: new Date().toISOString().split('T')[0],
   sessionType:'itp_review',
   goalLetter:'', objReviewed:'', goalLetterNext:'', objNext:'', objCompleted:false,
-  scale: null,
   interventions:[],
   describe:'', progress:'',
   siDenied:false, hiDenied:false, safetyPlan:false,
@@ -4996,19 +4983,6 @@ const SN_INTERVENTIONS = [
   'Motivational Interviewing',
   'CBT — Cognitive Restructuring',
 ];
-
-const SCALE_DESCS = {
-  1:'Very poor — highly resistant, unable to engage.',
-  2:'Poor — significant disengagement or behavioral problems.',
-  3:'Below average — inconsistent engagement, notable resistance.',
-  4:'Fair — some engagement but significant barriers present.',
-  5:'Moderate — mixed; moments of engagement alongside avoidance.',
-  6:'Above average — generally engaged with some inconsistency.',
-  7:'Good — cooperating and participating in programming.',
-  8:'Very good — actively engaged, motivated, meeting expectations.',
-  9:'Excellent — strong engagement and positive behavioral pattern.',
-  10:'Outstanding — fully motivated and exemplary participation.',
-};
 
 // ── TIMER ────────────────────────────────────────
 let snTimerInterval = null;
@@ -5090,28 +5064,11 @@ function snUpdateSessionType() {
   const isCrisis = type === 'crisis';
   const isFirst = type === 'itp_first';
   document.getElementById('sn-itp-fields').style.display = isCrisis ? 'none' : 'block';
-  document.getElementById('sn-scale-field').style.display = isCrisis ? 'none' : 'block';
   // Hide "reviewed" row for first meeting — they haven't worked an objective yet
   const reviewedRow = document.getElementById('sn-reviewed-row');
   const completedRow = document.getElementById('sn-completed-row');
   if (reviewedRow) reviewedRow.style.display = isFirst ? 'none' : 'grid';
   if (completedRow) completedRow.style.display = isFirst ? 'none' : 'block';
-}
-
-function snBuildScalePills() {
-  const container = document.getElementById('sn-scale-pills');
-  for (let i = 1; i <= 10; i++) {
-    const btn = document.createElement('button');
-    btn.className = 'risk-pill r' + (i <= 3 ? 4 : i <= 5 ? 3 : i <= 7 ? 2 : i <= 8 ? 1 : 0);
-    btn.textContent = i;
-    btn.onclick = () => {
-      snState.scale = i;
-      container.querySelectorAll('.risk-pill').forEach(p => p.classList.remove('selected'));
-      btn.classList.add('selected');
-      document.getElementById('sn-scale-desc').textContent = SCALE_DESCS[i] || '';
-    };
-    container.appendChild(btn);
-  }
 }
 
 function snBuildInterventionChips() {
@@ -5192,9 +5149,6 @@ function snFormatResponse() {
     if (snState.objCompleted && snState.objReviewed && snState.goalLetter) {
       lines.push(`${c} completed objective ${ob}${gl} of Goal ${gl} from their ITP.`);
     }
-    if (snState.scale !== null) {
-      lines.push(`${c} scaled their overall weekly attitude/behavior a ${snState.scale}/10. ${SCALE_DESCS[snState.scale]}`);
-    }
   }
 
   if (snState.progress) lines.push(snState.progress);
@@ -5248,7 +5202,6 @@ function snClear() {
     clientName:'', clinician:'', date: new Date().toISOString().split('T')[0],
     sessionType:'itp_review',
     goalLetter:'', objReviewed:'', goalLetterNext:'', objNext:'', objCompleted:false,
-    scale: null,
     interventions:[],
     describe:'', progress:'',
     siDenied:false, hiDenied:false, safetyPlan:false,
@@ -5266,8 +5219,6 @@ function snClear() {
     if (el) el.checked = false;
   });
   document.getElementById('sn-risk-detail-wrap').style.display = 'none';
-  document.getElementById('sn-scale-pills').querySelectorAll('.risk-pill').forEach(p => p.classList.remove('selected'));
-  document.getElementById('sn-scale-desc').textContent = '';
   document.querySelectorAll('.sn-chip').forEach(c => c.classList.remove('active'));
   snUpdateSessionType();
   snTimerReset();
@@ -5280,7 +5231,6 @@ function snClear() {
 // Init on load
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('sn-date').value = snState.date;
-  snBuildScalePills();
   snBuildInterventionChips();
   renderITPGoals();
 });
