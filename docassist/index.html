@@ -261,7 +261,7 @@ select.ctrl:focus, input.ctrl:focus { border-color: var(--border-focus); }
 }
 .main-layout {
   display: grid;
-  grid-template-columns: 400px 1fr;
+  grid-template-columns: 420px 1fr;
   flex: 1;
   min-height: 0;
   overflow: hidden;
@@ -543,7 +543,7 @@ select.ctrl:focus, input.ctrl:focus { border-color: var(--border-focus); }
 .placeholder-text { font-size: 13px; line-height: 1.6; }
 
 /* OUTPUT DOC */
-.output-doc { display: none; max-width: 660px; }
+.output-doc { display: none; max-width: 820px; }
 .output-doc.visible { display: block; }
 
 .doc-header { padding-bottom: 14px; margin-bottom: 20px; border-bottom: 2px solid var(--text); }
@@ -662,7 +662,7 @@ select.ctrl:focus, input.ctrl:focus { border-color: var(--border-focus); }
 .tab-panel > * { min-height: 0; }
 
 /* ─── RISK RATINGS ────────────────────────── */
-.risk-ratings-block { padding: 24px; max-width: 660px; }
+.risk-ratings-block { padding: 24px; max-width: 820px; }
 .risk-block-header {
   display: flex;
   align-items: flex-start;
@@ -747,7 +747,7 @@ select.ctrl:focus, input.ctrl:focus { border-color: var(--border-focus); }
 /* ─── SESSION NOTE ────────────────────────── */
 .session-tab-inner {
   display: grid;
-  grid-template-columns: 390px 1fr;
+  grid-template-columns: 420px 1fr;
   flex: 1;
   min-height: 0;
   overflow: hidden;
@@ -987,21 +987,18 @@ select.ctrl:focus, input.ctrl:focus { border-color: var(--border-focus); }
 .sn-timer-btn-stop:hover { background: #b45309; }
 .sn-timer-btn-reset { background: #2a3a30; color: #7ec8a0; border: 1px solid #2a4a35; }
 .sn-timer-btn-reset:hover { background: #1a3a25; }
-/* ─── ITP STICKY FORMAT BAR ───────────────── */
-.itp-sticky-bar {
-  position: sticky;
-  bottom: 0;
+/* ─── ITP FORMAT BAR ──────────────────────── */
+.itp-format-bar {
   background: var(--surface);
   border-top: 1px solid var(--border);
-  padding: 10px 0;
+  padding: 10px 18px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  z-index: 10;
-  margin-top: 16px;
+  flex-shrink: 0;
 }
-.itp-sticky-hint { font-size: 11px; color: var(--text-secondary); }
+.itp-format-hint { font-size: 11px; color: var(--text-secondary); }
 
 /* ─── SMART GOAL ──────────────────────────── */
 .smart-reminder {
@@ -1185,13 +1182,6 @@ select.ctrl:focus, input.ctrl:focus { border-color: var(--border-focus); }
 .itp-pair-obj { font-weight: 600; }
 .itp-pair-int { color: var(--text-secondary); margin-top: 2px; }
 
-.itp-output-box {
-  background: var(--output-bg); border: 1px solid var(--border); border-radius: 6px;
-  padding: 14px; margin-top: 14px; font-family: 'IBM Plex Mono', monospace;
-  font-size: 11px; line-height: 1.65; color: var(--text); white-space: pre-wrap;
-  display: none;
-}
-.itp-output-box.visible { display: block; }
 .itp-output-actions { display: flex; gap: 8px; margin-top: 10px; justify-content: flex-end; }
 .criteria-block {
   display: none;
@@ -2080,46 +2070,67 @@ select.ctrl:focus, input.ctrl:focus { border-color: var(--border-focus); }
     <span class="tool-nav-divider">|</span>
     <span class="tool-nav-title">ITP Development</span>
   </div>
-  <div style="flex:1;overflow-y:auto;min-height:0;padding:24px 24px 0 24px">
+  <!-- Two-column layout matching other tools -->
+  <div style="display:grid;grid-template-columns:480px 1fr;flex:1;min-height:0;overflow:hidden;">
 
-    <!-- ASAM REFERENCE -->
-    <div class="asam-ref-panel" id="asamRefPanel" style="max-width:660px">
-      <div class="asam-ref-header" onclick="toggleAsamRef()">
-        <div class="asam-ref-header-left">
-          <div class="asam-ref-header-title">ASAM Goals Reference</div>
-          <div class="asam-ref-header-sub">From your ASAM documentation — verify ITP goals align with these</div>
+    <!-- LEFT: Goal builder -->
+    <div style="border-right:1px solid var(--border);display:flex;flex-direction:column;background:var(--surface);overflow:hidden;">
+      <!-- Left scrollable area -->
+      <div style="flex:1;overflow-y:auto;min-height:0;padding:18px;" class="itp-left-scroll">
+
+        <!-- ASAM REFERENCE -->
+        <div class="asam-ref-panel" id="asamRefPanel">
+          <div class="asam-ref-header" onclick="toggleAsamRef()">
+            <div class="asam-ref-header-left">
+              <div class="asam-ref-header-title">ASAM Goals Reference</div>
+              <div class="asam-ref-header-sub">From your ASAM documentation — verify ITP goals align with these</div>
+            </div>
+            <div class="asam-ref-toggle" id="asamRefToggle">▾ expand</div>
+          </div>
+          <div class="asam-ref-body" id="asamRefBody" style="display:none">
+            <div class="asam-ref-empty" id="asamRefEmpty">No ASAM goals have been entered yet. Complete the continued stay or primary dimension fields in ASAM Documentation to see reference content here.</div>
+          </div>
         </div>
-        <div class="asam-ref-toggle" id="asamRefToggle">▾ expand</div>
-      </div>
-      <div class="asam-ref-body" id="asamRefBody" style="display:none">
-        <div class="asam-ref-empty" id="asamRefEmpty">No ASAM goals have been entered yet. Complete the continued stay or primary dimension fields in ASAM Documentation to see reference content here.</div>
-      </div>
-    </div>
 
-    <div class="itp-block visible" id="itpBlock" style="margin-top:0;border-top:none;padding-top:0;max-width:660px">
-      <div class="itp-block-header">
-        <div class="itp-block-titles">
-          <div class="itp-block-title">ITP Goals, Objectives &amp; Interventions</div>
-          <div class="itp-block-subtitle">Add categories, edit goals to be SMART, check objectives and interventions, then format.</div>
+        <div class="itp-block visible" id="itpBlock" style="margin-top:0;border-top:none;padding-top:0;">
+          <div class="itp-block-header">
+            <div class="itp-block-titles">
+              <div class="itp-block-title">ITP Goals, Objectives &amp; Interventions</div>
+              <div class="itp-block-subtitle">Add categories, edit goals to be SMART, check objectives and interventions, then format.</div>
+            </div>
+          </div>
+          <div class="itp-smart-warning" id="itpSmartWarning">
+            <div class="itp-smart-warning-title">⚠ The following goals still use template language and should be made SMART before submitting:</div>
+            <ul id="itpSmartWarningList"></ul>
+          </div>
+          <div id="itpSections"></div>
         </div>
-      </div>
-      <div class="itp-smart-warning" id="itpSmartWarning">
-        <div class="itp-smart-warning-title">⚠ The following goals still use template language and should be made SMART before submitting:</div>
-        <ul id="itpSmartWarningList"></ul>
-      </div>
-      <div id="itpSections"></div>
-      <div class="itp-output-box" id="itpOutputBox"></div>
-      <div class="itp-output-actions" id="itpOutputActions" style="display:none">
-        <button class="btn btn-ghost" onclick="copyITPOutput(this)">Copy ITP Text</button>
-      </div>
-    </div>
 
-    <div class="itp-sticky-bar" style="max-width:660px">
-      <span class="itp-sticky-hint">Edit each goal to be specific, measurable, and time-bound before formatting.</span>
-      <button class="btn btn-primary" onclick="formatITPOutput(this)">Format for ITP</button>
-    </div>
+      </div><!-- /left scroll -->
 
-  </div>
+      <!-- Format bar pinned to bottom of left panel -->
+      <div class="itp-format-bar">
+        <span class="itp-format-hint">Edit each goal to be SMART before formatting.</span>
+        <button class="btn btn-primary" onclick="formatITPOutput(this)">Format for ITP</button>
+      </div>
+    </div><!-- /left panel -->
+
+    <!-- RIGHT: Formatted output -->
+    <div style="display:flex;flex-direction:column;background:var(--output-bg);overflow:hidden;">
+      <div style="padding:12px 20px;border-bottom:1px solid var(--border);background:var(--surface);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
+        <span style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-secondary);">Formatted Output</span>
+        <button class="tab-copy-btn" id="itpCopyBtn" onclick="copyITPOutput(this)" style="display:none">Copy ITP Text</button>
+      </div>
+      <div style="flex:1;overflow-y:auto;min-height:0;padding:20px;">
+        <div id="itpOutputPlaceholder" style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:10px;color:var(--text-secondary);text-align:center;">
+          <div style="font-size:28px;opacity:0.2">📋</div>
+          <div style="font-size:13px;line-height:1.6;">Add goals and click <strong>Format for ITP</strong><br>to generate formatted output.</div>
+        </div>
+        <div class="itp-output-box" id="itpOutputBox" style="display:none;background:white;border:1px solid var(--border);border-radius:6px;padding:20px 24px;font-family:'IBM Plex Mono',monospace;font-size:11.5px;line-height:1.75;color:var(--text);white-space:pre-wrap;min-height:200px;"></div>
+      </div>
+    </div><!-- /right panel -->
+
+  </div><!-- /two-column grid -->
 </div><!-- /view-itp -->
 
 <!-- ═══ INDIVIDUAL NOTE VIEW ════════════════════════ -->
@@ -4153,6 +4164,13 @@ const ITP_SECTION_LABELS = {
 
 // tracks which categories are selected per section
 const itpSelected = { A: new Set(), B: new Set(), C: new Set() };
+// custom goals per section
+const itpCustomGoals = { A: [], B: [], C: [] };
+
+function removeCustomGoal(section, idx) {
+  itpCustomGoals[section].splice(idx, 1);
+  rebuildSection(section);
+}
 
 function renderITPGoals() {
   const container = document.getElementById('itpSections');
@@ -4201,6 +4219,30 @@ function renderITPGoals() {
     cards.id = `itp-cards-${section}`;
     div.appendChild(cards);
 
+    // custom goals container — separate from the dropdown categories
+    const customDivider = document.createElement('div');
+    customDivider.style.cssText = 'display:flex;align-items:center;gap:10px;margin:14px 0 10px;';
+    customDivider.innerHTML = `<div style="flex:1;height:1px;background:var(--border);"></div><span style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-secondary);white-space:nowrap;">Custom Goals</span><div style="flex:1;height:1px;background:var(--border);"></div>`;
+    div.appendChild(customDivider);
+
+    const customCards = document.createElement('div');
+    customCards.className = 'itp-category-cards';
+    customCards.id = `itp-custom-cards-${section}`;
+    div.appendChild(customCards);
+
+    const addCustomRow = document.createElement('div');
+    addCustomRow.style.cssText = 'margin-bottom:8px;';
+    const addCustomBtn = document.createElement('button');
+    addCustomBtn.className = 'itp-add-btn';
+    addCustomBtn.style.cssText = 'width:100%;display:flex;justify-content:center;background:white;border-color:var(--border);color:var(--text-secondary);';
+    addCustomBtn.textContent = '+ Add Custom Goal';
+    addCustomBtn.onclick = () => {
+      itpCustomGoals[section].push({ name: '', goalText: '', pairs: [] });
+      rebuildSection(section);
+    };
+    addCustomRow.appendChild(addCustomBtn);
+    div.appendChild(addCustomRow);
+
     container.appendChild(div);
     rebuildSection(section);
   });
@@ -4217,6 +4259,9 @@ function rebuildSection(section) {
 
   let letterIdx = 0;
   const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+  // Handle custom goals for this section
+  if (!itpCustomGoals[section]) itpCustomGoals[section] = [];
 
   cats.forEach(cat => {
     if (!itpSelected[section].has(cat.id)) return;
@@ -4235,8 +4280,25 @@ function rebuildSection(section) {
 
     const hdr = document.createElement('div');
     hdr.className = 'itp-cat-header';
-    hdr.onclick = () => body.classList.toggle('open');
-    hdr.innerHTML = `<div class="itp-cat-letter">${letter}</div><div class="itp-cat-name">${cat.name}</div><div class="itp-cat-toggle">▾ expand</div>`;
+    hdr.style.cssText = 'cursor:default;';
+    const hdrLeft = document.createElement('div');
+    hdrLeft.style.cssText = 'display:flex;align-items:center;gap:8px;flex:1;min-width:0;cursor:pointer;';
+    hdrLeft.innerHTML = `<div class="itp-cat-letter" style="flex-shrink:0;">${letter}</div><div class="itp-cat-name" style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${cat.name}</div>`;
+    hdrLeft.onclick = () => body.classList.toggle('open');
+    const removeCatBtn = document.createElement('button');
+    removeCatBtn.textContent = 'Remove';
+    removeCatBtn.style.cssText = 'flex-shrink:0;background:none;border:1px solid var(--border);border-radius:4px;color:var(--text-secondary);font-family:inherit;font-size:10px;font-weight:600;padding:3px 9px;cursor:pointer;transition:all 0.15s;white-space:nowrap;';
+    removeCatBtn.onmouseover = () => { removeCatBtn.style.borderColor = '#c0392b'; removeCatBtn.style.color = '#c0392b'; };
+    removeCatBtn.onmouseout = () => { removeCatBtn.style.borderColor = 'var(--border)'; removeCatBtn.style.color = 'var(--text-secondary)'; };
+    removeCatBtn.onclick = () => { itpSelected[section].delete(cat.id); rebuildSection(section); };
+    const hdrToggle = document.createElement('div');
+    hdrToggle.className = 'itp-cat-toggle';
+    hdrToggle.style.cssText = 'cursor:pointer;margin-left:8px;flex-shrink:0;';
+    hdrToggle.textContent = '▾ expand';
+    hdrToggle.onclick = () => body.classList.toggle('open');
+    hdr.appendChild(hdrLeft);
+    hdr.appendChild(removeCatBtn);
+    hdr.appendChild(hdrToggle);
     card.appendChild(hdr);
 
     const body = document.createElement('div');
@@ -4269,6 +4331,13 @@ function rebuildSection(section) {
     });
     body.appendChild(gs);
 
+    // Edit-required notice — visible until counselor customizes the goal
+    const editNotice = document.createElement('div');
+    editNotice.id = `itp-edit-notice-${cat.id}`;
+    editNotice.style.cssText = 'display:flex;align-items:center;gap:7px;background:#fff7ed;border:1px solid #f5a623;border-left:3px solid #d97706;border-radius:4px;padding:7px 10px;margin-bottom:5px;font-size:11px;color:#7c4a00;line-height:1.45;';
+    editNotice.innerHTML = '<span style="font-size:14px;flex-shrink:0;">✏️</span><span><strong>Edit this goal</strong> — the template below is a starting point. Make it specific to this client: add a timeframe, measurable target, and client-relevant detail before formatting.</span>';
+    body.appendChild(editNotice);
+
     // Editable SMART textarea
     const gta = document.createElement('textarea');
     gta.className = 'itp-goal-textarea unchanged';
@@ -4284,12 +4353,14 @@ function rebuildSection(section) {
       gta.value = newGoal;
       gta.setAttribute('data-original', newGoal);
       gta.classList.add('unchanged');
+      editNotice.style.display = 'flex';
     };
 
-    // When counselor edits, remove unchanged style
+    // When counselor edits, remove unchanged style and hide notice
     gta.oninput = () => {
       const isUnchanged = gta.value.trim() === gta.getAttribute('data-original').trim();
       gta.classList.toggle('unchanged', isUnchanged);
+      editNotice.style.display = isUnchanged ? 'flex' : 'none';
     };
 
     body.appendChild(gta);
@@ -4299,21 +4370,198 @@ function rebuildSection(section) {
     body.appendChild(pl);
 
     cat.pairs.forEach((pair, i) => {
-      const pairDiv = document.createElement('label');
+      const pairDiv = document.createElement('div');
       pairDiv.className = 'itp-pair';
+      pairDiv.style.flexDirection = 'column';
+      pairDiv.style.gap = '6px';
+
+      // checkbox row
+      const cbRow = document.createElement('label');
+      cbRow.style.cssText = 'display:flex;align-items:flex-start;gap:8px;cursor:pointer;';
       const cb = document.createElement('input');
       cb.type = 'checkbox'; cb.className = 'itp-pair-cb';
       cb.id = `itp-pair-${cat.id}-${i}`; cb.checked = false;
-      pairDiv.appendChild(cb);
+      cbRow.appendChild(cb);
       const txt = document.createElement('div');
       txt.className = 'itp-pair-text';
       txt.innerHTML = `<div class="itp-pair-obj">Objective ${i+1}${letter}: ${pair.o}</div><div class="itp-pair-int">Intervention ${i+1}${letter}: ${pair.i}</div>`;
-      pairDiv.appendChild(txt);
+      cbRow.appendChild(txt);
+      pairDiv.appendChild(cbRow);
+
+      // Target date row (hidden until checked)
+      const dateRow = document.createElement('div');
+      dateRow.id = `itp-datewrap-${cat.id}-${i}`;
+      dateRow.style.cssText = 'display:none;padding-left:24px;';
+      dateRow.innerHTML = `<label style="display:flex;align-items:center;gap:8px;font-size:11px;color:var(--text-secondary);">Target Date: <input type="date" id="itp-target-${cat.id}-${i}" style="border:1px solid var(--border);border-radius:4px;padding:3px 7px;font-family:inherit;font-size:11px;color:var(--text);background:white;outline:none;" /></label>`;
+      pairDiv.appendChild(dateRow);
+
+      cb.addEventListener('change', () => {
+        dateRow.style.display = cb.checked ? 'block' : 'none';
+      });
+
       body.appendChild(pairDiv);
     });
 
     card.appendChild(body);
     cards.appendChild(card);
+  });
+
+  // ── Custom goal cards ──
+  const customCards = document.getElementById(`itp-custom-cards-${section}`);
+  if (!customCards) return;
+  customCards.innerHTML = '';
+
+  itpCustomGoals[section].forEach((customCat, customIdx) => {
+    const letter = letters[letterIdx++];
+    const catId = `__custom_${section}_${customIdx}`;
+
+    // chip
+    const chip = document.createElement('span');
+    chip.className = 'itp-chip';
+    chip.style.cssText = 'background:#ede9f5;border-color:#7c5cbf;color:#5a3d9a;';
+    chip.innerHTML = `<b>${letter}.</b> ${customCat.name || 'Custom'} <button class="itp-chip-remove" title="Remove" onclick="removeCustomGoal('${section}',${customIdx})">✕</button>`;
+    chips.appendChild(chip);
+
+    const card = document.createElement('div');
+    card.className = 'itp-cat-card';
+    card.style.borderColor = '#c4b5e8';
+
+    const hdr = document.createElement('div');
+    hdr.className = 'itp-cat-header';
+    hdr.style.cssText = 'cursor:default;';
+    const hdrLeft = document.createElement('div');
+    hdrLeft.style.cssText = 'display:flex;align-items:center;gap:8px;flex:1;min-width:0;cursor:pointer;';
+    hdrLeft.innerHTML = `<div class="itp-cat-letter" style="background:#7c5cbf;flex-shrink:0;">${letter}</div><div class="itp-cat-name" id="itp-custom-name-display-${section}-${customIdx}" style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${customCat.name || '<em style="color:var(--text-secondary);font-weight:400">Enter goal name</em>'}</div>`;
+    hdrLeft.onclick = () => body.classList.toggle('open');
+    const removeGoalBtn = document.createElement('button');
+    removeGoalBtn.textContent = 'Remove Goal';
+    removeGoalBtn.style.cssText = 'flex-shrink:0;background:none;border:1px solid #c4b5e8;border-radius:4px;color:#7c5cbf;font-family:inherit;font-size:10px;font-weight:600;padding:3px 9px;cursor:pointer;transition:all 0.15s;white-space:nowrap;';
+    removeGoalBtn.onmouseover = () => { removeGoalBtn.style.background = '#7c5cbf'; removeGoalBtn.style.color = 'white'; };
+    removeGoalBtn.onmouseout = () => { removeGoalBtn.style.background = 'none'; removeGoalBtn.style.color = '#7c5cbf'; };
+    removeGoalBtn.onclick = () => removeCustomGoal(section, customIdx);
+    const hdrToggle = document.createElement('div');
+    hdrToggle.className = 'itp-cat-toggle';
+    hdrToggle.style.cssText = 'cursor:pointer;margin-left:8px;flex-shrink:0;';
+    hdrToggle.textContent = '▾ expand';
+    hdrToggle.onclick = () => body.classList.toggle('open');
+    hdr.appendChild(hdrLeft);
+    hdr.appendChild(removeGoalBtn);
+    hdr.appendChild(hdrToggle);
+    card.appendChild(hdr);
+
+    const body = document.createElement('div');
+    body.className = 'itp-cat-body open';
+
+    // Goal name
+    const nameLabel = document.createElement('div'); nameLabel.className = 'itp-goal-label'; nameLabel.textContent = 'Goal Category Name:';
+    body.appendChild(nameLabel);
+    const nameInput = document.createElement('input');
+    nameInput.type = 'text';
+    nameInput.style.cssText = 'width:100%;padding:6px 9px;border:1px solid var(--border);border-radius:5px;font-family:inherit;font-size:12px;color:var(--text);background:white;outline:none;margin-bottom:10px;';
+    nameInput.placeholder = 'e.g. Spirituality, Grief, Life Skills…';
+    nameInput.value = customCat.name || '';
+    nameInput.oninput = () => {
+      customCat.name = nameInput.value;
+      const nameDisplay = document.getElementById(`itp-custom-name-display-${section}-${customIdx}`);
+      if (nameDisplay) nameDisplay.innerHTML = nameInput.value || '<em style="color:var(--text-secondary);font-weight:400">Enter goal name</em>';
+      chip.innerHTML = `<b>${letter}.</b> ${nameInput.value || 'Custom'} <button class="itp-chip-remove" title="Remove" onclick="removeCustomGoal('${section}',${customIdx})">✕</button>`;
+    };
+    body.appendChild(nameInput);
+
+    // SMART reminder
+    const smartEl2 = document.createElement('div');
+    smartEl2.className = 'smart-reminder';
+    [['S','Specific'],['M','Measurable'],['A','Achievable'],['R','Relevant'],['T','Time-bound']].forEach(([l,t]) => {
+      const s = document.createElement('span'); s.className = 'smart-letter';
+      s.innerHTML = `<b>${l}</b> <span>${t}</span>`; smartEl2.appendChild(s);
+    });
+    body.appendChild(smartEl2);
+
+    const gl2 = document.createElement('div'); gl2.className = 'itp-goal-label'; gl2.style.marginTop = '6px'; gl2.textContent = `Goal ${letter} Text:`;
+    body.appendChild(gl2);
+    const gta2 = document.createElement('textarea');
+    gta2.className = 'itp-goal-textarea';
+    gta2.id = `itp-goal-${catId}`;
+    gta2.rows = 3;
+    gta2.placeholder = 'Write a client-specific SMART goal — include measurable outcomes and a timeframe.';
+    gta2.value = customCat.goalText || '';
+    gta2.oninput = () => { customCat.goalText = gta2.value; };
+    body.appendChild(gta2);
+
+    const pl2 = document.createElement('div'); pl2.className = 'itp-pairs-label'; pl2.style.marginTop = '10px'; pl2.textContent = 'Objectives & Interventions:';
+    body.appendChild(pl2);
+
+    customCat.pairs.forEach((pair, pi) => {
+      const pairWrap = document.createElement('div');
+      pairWrap.style.cssText = 'border:1px solid var(--border);border-radius:5px;padding:10px;background:var(--output-bg);margin-bottom:8px;display:flex;flex-direction:column;gap:6px;';
+
+      const objHeader = document.createElement('div');
+      objHeader.style.cssText = 'display:flex;align-items:center;justify-content:space-between;';
+      const objLabel = document.createElement('span');
+      objLabel.style.cssText = 'font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-secondary);';
+      objLabel.textContent = `Objective ${pi+1}${letter}`;
+      const removeBtn = document.createElement('button');
+      removeBtn.textContent = 'Remove';
+      removeBtn.style.cssText = 'background:none;border:1px solid var(--border);border-radius:3px;color:var(--text-secondary);cursor:pointer;font-size:10px;padding:1px 7px;font-family:inherit;';
+      removeBtn.onclick = () => { customCat.pairs.splice(pi, 1); rebuildSection(section); };
+      objHeader.appendChild(objLabel); objHeader.appendChild(removeBtn);
+      pairWrap.appendChild(objHeader);
+
+      const objTa = document.createElement('textarea');
+      objTa.className = 'itp-goal-textarea';
+      objTa.rows = 2; objTa.value = pair.o;
+      objTa.placeholder = 'Objective text…';
+      objTa.oninput = () => { pair.o = objTa.value; };
+      pairWrap.appendChild(objTa);
+
+      // Include + target date on same row
+      const cbRow2 = document.createElement('div');
+      cbRow2.style.cssText = 'display:flex;align-items:center;gap:14px;flex-wrap:wrap;';
+      const cbLabel2 = document.createElement('label');
+      cbLabel2.style.cssText = 'display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-secondary);cursor:pointer;';
+      const cbInclude = document.createElement('input');
+      cbInclude.type = 'checkbox';
+      cbInclude.id = `itp-pair-${catId}-${pi}`;
+      cbInclude.checked = pair.include !== false;
+      cbInclude.style.accentColor = 'var(--accent)';
+      const dateWrap = document.createElement('label');
+      dateWrap.style.cssText = `display:${pair.include !== false ? 'flex' : 'none'};align-items:center;gap:6px;font-size:11px;color:var(--text-secondary);`;
+      dateWrap.innerHTML = `Target Date: <input type="date" id="itp-target-${catId}-${pi}" style="border:1px solid var(--border);border-radius:4px;padding:3px 7px;font-family:inherit;font-size:11px;color:var(--text);background:white;outline:none;" value="${pair.targetDate||''}" />`;
+      dateWrap.querySelector('input').addEventListener('change', e => { pair.targetDate = e.target.value; });
+      cbInclude.addEventListener('change', () => {
+        pair.include = cbInclude.checked;
+        dateWrap.style.display = cbInclude.checked ? 'flex' : 'none';
+      });
+      cbLabel2.appendChild(cbInclude);
+      cbLabel2.appendChild(document.createTextNode('Include in output'));
+      cbRow2.appendChild(cbLabel2);
+      cbRow2.appendChild(dateWrap);
+      pairWrap.appendChild(cbRow2);
+
+      const intLabel = document.createElement('div');
+      intLabel.style.cssText = 'font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-secondary);margin-top:2px;';
+      intLabel.textContent = `Intervention ${pi+1}${letter}`;
+      pairWrap.appendChild(intLabel);
+
+      const intTa = document.createElement('textarea');
+      intTa.className = 'itp-goal-textarea';
+      intTa.rows = 2; intTa.value = pair.i;
+      intTa.placeholder = 'Intervention text…';
+      intTa.oninput = () => { pair.i = intTa.value; };
+      pairWrap.appendChild(intTa);
+
+      body.appendChild(pairWrap);
+    });
+
+    const addObjBtn = document.createElement('button');
+    addObjBtn.className = 'itp-add-btn';
+    addObjBtn.style.cssText = 'width:100%;display:flex;justify-content:center;margin-top:4px;';
+    addObjBtn.textContent = '+ Add Objective & Intervention';
+    addObjBtn.onclick = () => { customCat.pairs.push({ o:'', i:'', include:true, targetDate:'' }); rebuildSection(section); };
+    body.appendChild(addObjBtn);
+
+    card.appendChild(body);
+    customCards.appendChild(card);
   });
 }
 
@@ -4321,31 +4569,58 @@ function formatITPOutput(btn) {
   const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   let output = '';
   const unchanged = [];
+  const today = new Date();
+  const todayStr = (today.getMonth()+1) + '/' + today.getDate() + '/' + today.getFullYear();
 
   ['A','B','C'].forEach(section => {
     const cats = GOALS_DATA.filter(c => c.section === section && itpSelected[section].has(c.id));
-    if (!cats.length) return;
+    const customs = itpCustomGoals[section] || [];
+    if (!cats.length && !customs.length) return;
     output += `${ITP_SECTION_LABELS[section].toUpperCase()}\n${'─'.repeat(48)}\n\n`;
+    let letterIdx = 0;
 
     cats.forEach((cat, idx) => {
-      const letter = letters[idx];
+      const letter = letters[letterIdx];
+      letterIdx++;
       const gta = document.getElementById(`itp-goal-${cat.id}`);
       const goalText = gta ? gta.value.trim() : cat.goals[0];
 
-      // Check if unchanged
       if (gta && gta.classList.contains('unchanged')) {
         unchanged.push(`${ITP_SECTION_LABELS[section].split('—')[0].trim()} — Goal ${letter} (${cat.name})`);
       }
 
-      output += `Goal ${letter}: ${goalText}\n\n`;
+      output += `Goal ${letter}: ${goalText} (START DATE ${todayStr})\n\n`;
 
       cat.pairs.forEach((pair, i) => {
         const cb = document.getElementById(`itp-pair-${cat.id}-${i}`);
         if (!cb || !cb.checked) return;
-        output += `   Objective ${i+1}${letter}: ${pair.o}\n`;
+        const targetInput = document.getElementById(`itp-target-${cat.id}-${i}`);
+        const targetDate = targetInput && targetInput.value
+          ? (() => { const d = new Date(targetInput.value + 'T12:00:00'); return (d.getMonth()+1)+'/'+d.getDate()+'/'+d.getFullYear(); })()
+          : '__/__/____';
+        output += `   Objective ${i+1}${letter}: ${pair.o} (ESTABLISHED ${todayStr}) (TARGET DATE ${targetDate})\n`;
         output += `   Intervention ${i+1}${letter}: ${pair.i}\n\n`;
       });
     });
+
+    customs.forEach((customCat, customIdx) => {
+      const letter = letters[letterIdx];
+      letterIdx++;
+      const catId = `__custom_${section}_${customIdx}`;
+      const goalText = customCat.goalText || '[Custom goal text]';
+
+      output += `Goal ${letter}: ${goalText} (START DATE ${todayStr})\n\n`;
+
+      customCat.pairs.forEach((pair, pi) => {
+        if (pair.include === false) return;
+        const targetDate = pair.targetDate
+          ? (() => { const d = new Date(pair.targetDate + 'T12:00:00'); return (d.getMonth()+1)+'/'+d.getDate()+'/'+d.getFullYear(); })()
+          : '__/__/____';
+        output += `   Objective ${pi+1}${letter}: ${pair.o} (ESTABLISHED ${todayStr}) (TARGET DATE ${targetDate})\n`;
+        output += `   Intervention ${pi+1}${letter}: ${pair.i}\n\n`;
+      });
+    });
+
     output += '\n';
   });
 
@@ -4361,10 +4636,12 @@ function formatITPOutput(btn) {
   }
 
   const box = document.getElementById('itpOutputBox');
-  const actions = document.getElementById('itpOutputActions');
+  const placeholder = document.getElementById('itpOutputPlaceholder');
+  const copyBtn = document.getElementById('itpCopyBtn');
   box.textContent = output.trim();
-  box.classList.add('visible');
-  actions.style.display = 'flex';
+  box.style.display = output.trim() ? 'block' : 'none';
+  if (placeholder) placeholder.style.display = output.trim() ? 'none' : 'flex';
+  if (copyBtn) copyBtn.style.display = output.trim() ? 'inline-flex' : 'none';
   if (btn) { const orig = btn.textContent; btn.textContent = '✓ Formatted'; btn.classList.add('copied'); setTimeout(()=>{btn.textContent=orig;btn.classList.remove('copied');},1800); }
 }
 
@@ -4437,11 +4714,14 @@ function doReset() {
   document.getElementById('criteriaContent').innerHTML = '<div style="color:var(--text-secondary);font-size:13px">Generate documentation first to see suggested criteria.</div>';
 
   // Reset ITP
-  ['A','B','C'].forEach(s => itpSelected[s].clear());
+  ['A','B','C'].forEach(s => { itpSelected[s].clear(); itpCustomGoals[s] = []; });
   renderITPGoals();
-  document.getElementById('itpOutputBox').textContent = '';
-  document.getElementById('itpOutputBox').classList.remove('visible');
-  document.getElementById('itpOutputActions').style.display = 'none';
+  const itpBox = document.getElementById('itpOutputBox');
+  if (itpBox) { itpBox.textContent = ''; itpBox.style.display = 'none'; }
+  const itpPlaceholder = document.getElementById('itpOutputPlaceholder');
+  if (itpPlaceholder) itpPlaceholder.style.display = 'flex';
+  const itpCopyBtn = document.getElementById('itpCopyBtn');
+  if (itpCopyBtn) itpCopyBtn.style.display = 'none';
 
   // Reset session note
   snClear();
