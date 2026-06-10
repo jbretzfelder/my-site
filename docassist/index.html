@@ -984,8 +984,6 @@ select.ctrl:focus, input.ctrl:focus { border-color: var(--border-focus); }
 }
 .sn-checkbox-row input { accent-color: var(--accent); }
 
-.sn-actions { display: flex; gap: 8px; padding-top: 4px; }
-
 /* Preview */
 .sn-preview-placeholder {
   display: flex;
@@ -1087,19 +1085,6 @@ select.ctrl:focus, input.ctrl:focus { border-color: var(--border-focus); }
 .sn-timer-btn-stop:hover { background: #b45309; }
 .sn-timer-btn-reset { background: #2a3a30; color: #7ec8a0; border: 1px solid #2a4a35; }
 .sn-timer-btn-reset:hover { background: #1a3a25; }
-/* ─── ITP FORMAT BAR ──────────────────────── */
-.itp-format-bar {
-  background: var(--surface);
-  border-top: 1px solid var(--border);
-  padding: 10px 18px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex-shrink: 0;
-}
-.itp-format-hint { font-size: 11px; color: var(--text-secondary); }
-
 /* ─── SMART GOAL ──────────────────────────── */
 .smart-reminder {
   display: flex;
@@ -1226,7 +1211,6 @@ select.ctrl:focus, input.ctrl:focus { border-color: var(--border-focus); }
   font-size: 11px; font-weight: 500; cursor: default;
   border: 1px solid var(--accent); background: var(--accent-light); color: var(--accent);
 }
-.itp-chip-suggested { background: var(--primary-badge-bg); border-color: #1a6b35; color: #1a6b35; }
 .itp-chip-remove {
   background: none; border: none; cursor: pointer; padding: 0;
   color: inherit; font-size: 13px; line-height: 1; opacity: 0.6;
@@ -1523,12 +1507,6 @@ select.ctrl:focus, input.ctrl:focus { border-color: var(--border-focus); }
         <div class="home-card-title">Discharge Summary</div>
         <div class="home-card-desc">Structured discharge documentation covering treatment progress, goals, and aftercare plan</div>
         <div class="home-card-arrow">Open →</div>
-      </div>
-      <div class="home-card coming-soon">
-        <div class="home-card-badge">Coming Soon?</div>
-        <div class="home-card-icon">🧪</div>
-        <div class="home-card-title">Assessments</div>
-        <div class="home-card-desc">Standardized clinical assessments formatted for documentation and Remarkable entry</div>
       </div>
     </div>
   </div>
@@ -2049,7 +2027,7 @@ select.ctrl:focus, input.ctrl:focus { border-color: var(--border-focus); }
             <div class="placeholder-icon">📋</div>
             <div class="placeholder-text">
               Select a Level of Care, complete the relevant dimension fields,<br>
-              and click <strong>Generate Documentation</strong> to produce your medical necessity narrative.
+              and click <strong>Generate</strong> to produce your medical necessity narrative.
             </div>
           </div>
 
@@ -2162,13 +2140,14 @@ select.ctrl:focus, input.ctrl:focus { border-color: var(--border-focus); }
     </div><!-- /tab-panel-2 -->
 
     <!-- TAB 3: ITP DEVELOPMENT -->
-    <div class="generate-bar" id="generateBar">
-      <span class="generate-bar-hint">Fields left blank will be omitted from the generated narrative.</span>
-      <button class="btn btn-primary" onclick="generate()">Generate Documentation</button>
-    </div>
   </div><!-- /right-panel -->
 
 </div><!-- /main-layout -->
+
+<div class="generate-bar" id="generateBar">
+  <span class="generate-bar-hint">Fields left blank will be omitted from the generated narrative.</span>
+  <button class="btn btn-primary" onclick="generate()">Generate</button>
+</div>
 </div><!-- /view-asam -->
 
 <!-- ═══ ITP VIEW ═════════════════════════════════════ -->
@@ -2216,11 +2195,6 @@ select.ctrl:focus, input.ctrl:focus { border-color: var(--border-focus); }
 
       </div><!-- /left scroll -->
 
-      <!-- Format bar pinned to bottom of left panel -->
-      <div class="itp-format-bar">
-        <span class="itp-format-hint">Edit each goal to be SMART before formatting.</span>
-        <button class="btn btn-primary" onclick="formatITPOutput(this)">Format for ITP</button>
-      </div>
     </div><!-- /left panel -->
 
     <!-- RIGHT: Formatted output -->
@@ -2231,13 +2205,18 @@ select.ctrl:focus, input.ctrl:focus { border-color: var(--border-focus); }
       <div style="flex:1;overflow-y:auto;min-height:0;padding:20px;">
         <div id="itpOutputPlaceholder" style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:10px;color:var(--text-secondary);text-align:center;">
           <div style="font-size:28px;opacity:0.2">📋</div>
-          <div style="font-size:13px;line-height:1.6;">Add goals and click <strong>Format for ITP</strong><br>to generate formatted output.</div>
+          <div style="font-size:13px;line-height:1.6;">Add goals and click <strong>Generate</strong><br>to produce formatted output.</div>
         </div>
         <div id="itpOutputBoxes" style="display:none;display:flex;flex-direction:column;gap:20px;"></div>
       </div>
     </div><!-- /right panel -->
 
   </div><!-- /two-column grid -->
+
+  <div class="generate-bar">
+    <span class="generate-bar-hint">Edit each goal to be SMART before generating.</span>
+    <button class="btn btn-primary" onclick="formatITPOutput(this)">Generate</button>
+  </div>
 </div><!-- /view-itp -->
 
 <!-- ═══ INDIVIDUAL NOTE VIEW ════════════════════════ -->
@@ -2349,17 +2328,13 @@ select.ctrl:focus, input.ctrl:focus { border-color: var(--border-focus); }
             </div>
           </div>
 
-          <div class="sn-actions">
-            <button class="btn btn-primary" onclick="snGenerate()">Generate Note</button>
-            <button class="btn btn-ghost" onclick="snClear()">Clear</button>
-          </div>
         </div><!-- /session-inputs -->
 
         <!-- RIGHT: PREVIEW -->
         <div class="session-preview" id="snPreviewPanel">
           <div class="sn-preview-placeholder" id="snPlaceholder">
             <div style="font-size:28px;opacity:0.2">📝</div>
-            <div style="font-size:13px;line-height:1.6;color:var(--text-secondary)">Fill in the session details and click<br><strong>Generate Note</strong> to format your progress note.</div>
+            <div style="font-size:13px;line-height:1.6;color:var(--text-secondary)">Fill in the session details and click<br><strong>Generate</strong> to format your progress note.</div>
           </div>
           <div id="snNoteWrap" style="display:none;flex-direction:column;gap:16px;flex:1">
             <div class="sn-preview-header">
@@ -2383,6 +2358,14 @@ select.ctrl:focus, input.ctrl:focus { border-color: var(--border-focus); }
         </div>
 
       </div><!-- /session-tab-inner -->
+
+  <div class="generate-bar">
+    <span class="generate-bar-hint">Fill in session details — fields left blank will be omitted.</span>
+    <div style="display:flex;gap:8px;">
+      <button class="btn btn-ghost" onclick="snClear()">Clear</button>
+      <button class="btn btn-primary" onclick="snGenerate()">Generate</button>
+    </div>
+  </div>
   </div><!-- /view-note -->
 
 <!-- ═══ GROUP NOTE VIEW ══════════════════════════════ -->
@@ -2610,20 +2593,6 @@ select.ctrl:focus, input.ctrl:focus { border-color: var(--border-focus); }
   margin-bottom: 4px;
 }
 /* ─── BOTTOM BAR ──────────────────────────── */
-.gn-generate-bar {
-  background: var(--surface);
-  border-top: 1px solid var(--border);
-  padding: 12px 18px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-shrink: 0;
-  gap: 12px;
-}
-.gn-generate-hint {
-  font-size: 11px;
-  color: var(--text-secondary);
-}
 .gn-ratio-box {
   display: flex;
   align-items: center;
@@ -2900,20 +2869,13 @@ select.ctrl:focus, input.ctrl:focus { border-color: var(--border-focus); }
     <div class="gn-clients-area" id="gn-clients-area">
       <div class="gn-clients-toolbar">
         <div style="font-size:12px;font-weight:600;color:var(--text)" id="gn-client-count-label">12 clients</div>
-        <div style="display:flex;gap:8px;align-items:center">
-          <button class="btn btn-ghost" style="font-size:11px;padding:5px 12px" onclick="gnAddClient()">+ Add Client</button>
-          <button class="btn btn-primary" style="font-size:11px;padding:5px 14px" onclick="gnGenerateAll()">Generate All Notes</button>
-        </div>
+        <button class="btn btn-ghost" style="font-size:11px;padding:5px 12px" onclick="gnAddClient()">+ Add Client</button>
       </div>
 
       <div class="gn-clients-list" id="gn-clients-list">
         <!-- Client cards rendered by JS -->
       </div>
 
-      <div class="gn-generate-bar">
-        <div class="gn-generate-hint">Fill in each client card, then generate to produce copy-ready outputs.</div>
-        <button class="btn btn-primary" onclick="gnGenerateAll()">Generate All Notes</button>
-      </div>
     </div><!-- /gn-clients-area -->
 
     <!-- RIGHT: OUTPUT VIEW (shown after generating) -->
@@ -2929,6 +2891,11 @@ select.ctrl:focus, input.ctrl:focus { border-color: var(--border-focus); }
     </div><!-- /gn-output-area -->
 
   </div><!-- /gn-layout -->
+
+  <div class="generate-bar" id="gn-generate-bar">
+    <span class="generate-bar-hint">Fill in each client card, then generate to produce copy-ready outputs.</span>
+    <button class="btn btn-primary" onclick="gnGenerateAll()">Generate</button>
+  </div>
 </div><!-- /view-group -->
 
 <!-- ═══ DISCHARGE SUMMARY VIEW ══════════════════════ -->
@@ -4188,9 +4155,6 @@ function generate() {
   document.getElementById('proofreadBanner').style.display = 'flex';
   renderCriteria();
   renderRiskRatings();
-  // reset ITP selections then render fresh suggestions
-  ['A','B','C'].forEach(s => itpSelected[s].clear());
-  renderITPGoals();
   switchTab(1);
 }
 
@@ -4491,7 +4455,7 @@ function renderRiskRatings() {
   });
 }
 // Section A = Dims 1&2 | Section B = Dims 3&4 | Section C = Dims 5&6
-// Each category: { id, name, section, goals[], pairs[{o,i}], suggest(state)→bool }
+// Each category: { id, name, section, goals[], pairs[{o,i}] }
 // ═══════════════════════════════════════════════════
 const GOALS_DATA = [
   // ── SECTION A ──────────────────────────────────────
@@ -4514,8 +4478,7 @@ const GOALS_DATA = [
         i:'Assign the client to meet with an AA/NA member who has been working the 12-Step program for several years; afterward, process the meeting. Request that the client write out basic treatment expectations regarding sobriety and process with the clinician.' },
       { o:'Learn and implement 3 personal coping strategies to manage urges to lapse back into chemical use.',
         i:'Teach the client tailored coping strategies involving calming strategies (e.g., relaxation, breathing), thought-stopping, positive self-talk, and attentional focusing skills to manage triggered urges to use chemical substances.' },
-    ],
-    suggest: s => !!(s.dim1.substances),
+    ]
   },
   { id:'opioid', name:'Opioid Dependence', section:'A',
     goals:[
@@ -4536,8 +4499,7 @@ const GOALS_DATA = [
         i:'Review the negative influence of the client continuing substance-related friendships and assist him/her in making a plan to develop new sober relationships including "sobriety buddies"; revisit routinely and facilitate development of a new social support system.' },
       { o:'Learn and implement 3 personal coping strategies to manage urges to relapse.',
         i:'Teach the client tailored coping strategies involving calming strategies (e.g., relaxation, breathing), thought-stopping, positive self-talk, and attentional focusing skills to manage triggered urges to use opioids.' },
-    ],
-    suggest: s => !!(s.dim1.substances && /opioid|heroin|fentanyl|suboxone|methadone|opiate/i.test(s.dim1.substances)),
+    ]
   },
   { id:'pain', name:'Chronic Pain', section:'A',
     goals:[
@@ -4558,8 +4520,7 @@ const GOALS_DATA = [
         i:'Assign the client a homework exercise in which he/she identifies negative pain-related self-talk and positive alternatives (or assign "Correcting Distorted Thinking" in the Addiction Treatment Homework Planner, 4th ed.).' },
       { o:'Investigate the use of alternative pain remedies to reduce dependence on medication.',
         i:'Explore the client\'s alternatives to medications to remove or reduce pain (or assign "Alternative Methods for Managing Pain" or "Coping with Addiction and Chronic Pain" in the Addiction Treatment Homework Planner, 4th ed.).' },
-    ],
-    suggest: s => !!(s.dim2.conditions && /pain/i.test(s.dim2.conditions)),
+    ]
   },
 
   // ── SECTION B ──────────────────────────────────────
@@ -4580,8 +4541,7 @@ const GOALS_DATA = [
         i:'Probe how the client\'s family responded to expressions of feelings, wishes, and wants and why it became dangerous for the client to share feelings with others (or assign "Understanding Family History" in the Addiction Treatment Homework Planner, 4th ed.).' },
       { o:'List five qualities and behaviors that should be evident in others before interpersonal trust can be built.',
         i:'Assist the client in developing a set of character traits to be sought in others (e.g., honesty, sensitivity, kindness) that qualify them as trustworthy.' },
-    ],
-    suggest: s => false,
+    ]
   },
   { id:'anger', name:'Anger', section:'B',
     goals:[
@@ -4600,8 +4560,7 @@ const GOALS_DATA = [
         i:'Assign the client a homework exercise to identify angry self-talk and generate alternatives that help moderate angry reactions; reinforce success, providing corrective feedback toward improvement.' },
       { o:'Learn and implement 5 problem-solving and conflict resolution skills to manage interpersonal problems.',
         i:'Teach the client conflict resolution skills (e.g., empathy, active listening, "I messages," respectful communication, assertiveness without aggression, compromise); use modeling, role-playing, and behavior rehearsal.' },
-    ],
-    suggest: s => s.dim3.symptoms.some(x => /impuls/i.test(x)),
+    ]
   },
   { id:'antisocial', name:'Antisocial Behavior', section:'B',
     goals:[
@@ -4618,8 +4577,7 @@ const GOALS_DATA = [
         i:'Confront any denial of responsibility for irresponsible, self-centered, and impulsive behaviors (or assign "Letter of Apology" in the Adult Psychotherapy Homework Planner, 2nd ed.).' },
       { o:'Write 1 aftercare plan that includes a sponsor, AA meetings, and counseling.',
         i:'Help the client develop an aftercare program that specifically outlines what AA meetings will be attended, the psychotherapist he/she will be working with, and how a daily inventory will be taken.' },
-    ],
-    suggest: s => !!(s.dim3.diagnoses && /antisocial|aspd/i.test(s.dim3.diagnoses)) || s.dim6.risks.includes('Pending legal charges or active probation / parole'),
+    ]
   },
   { id:'anxiety', name:'Anxiety', section:'B',
     goals:[
@@ -4636,8 +4594,7 @@ const GOALS_DATA = [
         i:'Assign the client homework each session in which he/she practices relaxation exercises daily; teach relaxation skills (e.g., progressive muscle, guided imagery, slow diaphragmatic breathing).' },
       { o:'Identify, challenge, and replace fearful self-talk with positive, realistic, and empowering self-talk.',
         i:'Assign the client a homework exercise to identify fearful self-talk and create reality-based alternatives; reinforce success, providing corrective feedback toward improvement.' },
-    ],
-    suggest: s => s.dim3.symptoms.some(x => /anxiety|panic/i.test(x)),
+    ]
   },
   { id:'adhd', name:'ADHD', section:'B',
     goals:[
@@ -4655,8 +4612,7 @@ const GOALS_DATA = [
         i:'Educate the client about the signs and symptoms of ADHD and how they disrupt functioning through distractibility, poor planning, impulsivity, and possible procrastination.' },
       { o:'Develop an aftercare program that includes recovery group meetings, a sponsor, and continued therapy for ADHD and addiction.',
         i:'Help the client to develop an aftercare program that includes regular attendance at recovery group meetings, getting a sponsor, and continuing the therapy necessary to bring ADHD and addictive behavior under control.' },
-    ],
-    suggest: s => !!(s.dim3.diagnoses && /adhd|attention.deficit/i.test(s.dim3.diagnoses)),
+    ]
   },
   { id:'trauma', name:'Childhood Trauma', section:'B',
     goals:[
@@ -4675,8 +4631,7 @@ const GOALS_DATA = [
         i:'Teach the client anger management techniques (see Overcoming Situational and General Anger by Deffenbacher and McKay or assign "Alternatives to Destructive Anger" in the Adult Psychotherapy Homework Planner, 2nd ed.).' },
       { o:'Verbalize one plan as to how to fulfill the unmet needs of childhood now that adulthood has been reached.',
         i:'Assist the client in identifying, understanding, and verbalizing unresolved needs, wishes, and wants from childhood; then help develop a written plan to meet each unmet need.' },
-    ],
-    suggest: s => s.dim3.symptoms.some(x => /ptsd|trauma/i.test(x)),
+    ]
   },
   { id:'danger', name:'Dangerousness / Lethality', section:'B',
     goals:[
@@ -4697,8 +4652,7 @@ const GOALS_DATA = [
         i:'Develop a behavior contract that outlines what the client will do in recovery and the consequences of failing to meet these contractual obligations.' },
       { o:'Client will bring safety plan to weekly individual counseling sessions and will review with counselor.',
         i:'Clinician will review safety plan each week with this client, including triggers, signs, helpful actions, and supportive people. Probe the client to determine potential risk and help identify things that are helpful or not helpful during treatment.' },
-    ],
-    suggest: s => s.dim3.symptoms.includes('Active suicidal ideation') || s.dim3.symptoms.includes('Homicidal ideation'),
+    ]
   },
   { id:'dependent', name:'Dependent Traits', section:'B',
     goals:[
@@ -4715,8 +4669,7 @@ const GOALS_DATA = [
         i:'Ask the client to identify at least five instances in which he/she avoided decisions out of fear of failure or rejection (or assign "Making Your Own Decisions" in the Adult Psychotherapy Homework Planner, 2nd ed.).' },
       { o:'Identify abandonment experiences in the family of origin, and how they have influenced current relationships.',
         i:'Raise the client\'s awareness of the tendency to take the child role in relationships; explore causes in childhood abandonment and rejection experiences.' },
-    ],
-    suggest: s => false,
+    ]
   },
   { id:'depression', name:'Depression', section:'B',
     goals:[
@@ -4733,8 +4686,7 @@ const GOALS_DATA = [
         i:'Assign the client to keep a daily journal of automatic thoughts associated with depressive feelings; process the journal material to challenge depressive thinking patterns and replace with reality-based thoughts.' },
       { o:'Write down five things each night for which gratitude is felt.',
         i:'Teach the client about the 12-step recovery program\'s concept of an attitude of gratitude; assign to write down five things for which he/she is grateful each day.' },
-    ],
-    suggest: s => s.dim3.symptoms.some(x => /depress|anhedonia/i.test(x)),
+    ]
   },
   { id:'family', name:'Family Conflicts', section:'B',
     goals:[
@@ -4752,8 +4704,7 @@ const GOALS_DATA = [
         i:'Using modeling, role-playing, and behavior rehearsal, teach the client and family members a problem-solving approach including defining the problem, generating options, evaluating pros and cons, developing a plan, and evaluating.' },
       { o:'Plan and implement pleasurable family activities that promote communication and bonding.',
         i:'Assist the family in identifying and planning pleasurable family activities in which all members participate; process the experience and redirect for conflict management.' },
-    ],
-    suggest: s => s.dim6.support === 'hostile',
+    ]
   },
   { id:'grief', name:'Grief / Loss Unresolved', section:'B',
     goals:[
@@ -4771,8 +4722,7 @@ const GOALS_DATA = [
         i:'Ask the client to write a letter to the lost person describing fond memories, painful or regretful memories, and current feelings; process the letter in session.' },
       { o:'Make a written plan to increase independence and social interaction.',
         i:'Assign the client to write a plan to improve social contact with old friends and to make new ones (or assign "Moving On with My Life" in the Addiction Treatment Homework Planner, 4th ed.).' },
-    ],
-    suggest: s => false,
+    ]
   },
   { id:'impulsivity', name:'Impulsivity', section:'B',
     goals:[
@@ -4788,8 +4738,7 @@ const GOALS_DATA = [
         i:'Assign the client to write a list of negative consequences that occurred because of impulsivity (or assign "Recognizing the Negative Consequences of Impulsive Behavior" in the Adult Psychotherapy Homework Planner, 2nd ed.).' },
       { o:'Identify 3 thoughts that trigger impulsive behavior, then replace each with a more accurate thought.',
         i:'Help the client to uncover dysfunctional thoughts that lead to impulsivity; assist in replacing each with a thought that is more accurate, positive, self-enhancing, and adaptive.' },
-    ],
-    suggest: s => s.dim3.symptoms.some(x => /impuls/i.test(x)),
+    ]
   },
   { id:'legal', name:'Legal Problems', section:'B',
     goals:[
@@ -4807,8 +4756,7 @@ const GOALS_DATA = [
         i:'Assist the client in identifying positive, realistic thoughts to replace dysfunctional thinking that leads to addictive and illegal behaviors (or assign "Crooked Thinking Leads to Crooked Behavior" in the Adult Psychotherapy Homework Planner, 2nd ed.).' },
       { o:'Develop an aftercare program that includes regular attendance at recovery groups and any other necessary therapy.',
         i:'Help the client to develop an aftercare program with all the elements necessary to maintain abstinence and resolve legal conflicts (or assign "Personal Recovery Planning" in the Addiction Treatment Homework Planner, 4th ed.).' },
-    ],
-    suggest: s => s.dim6.risks.includes('Pending legal charges or active probation / parole'),
+    ]
   },
   { id:'narcissistic', name:'Narcissistic Traits (EGO)', section:'B',
     goals:[
@@ -4825,8 +4773,7 @@ const GOALS_DATA = [
         i:'Assign the client to list common lies told to exaggerate accomplishments and bolster self-image; show why the self-defeating lies eventually led to rejection from others.' },
       { o:'Acknowledge that low self-esteem and fear of failure or rejection are felt internally despite the external facade.',
         i:'Confront expressions of entitlement and braggadocio, interpreting them as a cover for feelings of fear and low self-esteem. Reinforce social interactions characterized by humility, empathy, honesty, and compassion.' },
-    ],
-    suggest: s => false,
+    ]
   },
   { id:'odd', name:'Oppositional Defiant Behavior', section:'B',
     goals:[
@@ -4844,8 +4791,7 @@ const GOALS_DATA = [
         i:'Explore the client\'s self-talk that mediates angry feelings and actions (e.g., demanding expectations reflected in should, must, or have to statements); identify and challenge biases, generating appraisals that facilitate a more flexible response.' },
       { o:'Learn and implement thought-stopping to manage intrusive unwanted thoughts that trigger anger and acting out.',
         i:'Assign the client to implement a "thought-stopping" technique on a daily basis between sessions; review implementation; reinforce success, providing corrective feedback toward improvement.' },
-    ],
-    suggest: s => !!(s.dim3.diagnoses && /oppos|defiant|odd/i.test(s.dim3.diagnoses)),
+    ]
   },
   { id:'ptsd', name:'Posttraumatic Stress Disorder (PTSD)', section:'B',
     goals:[
@@ -4866,8 +4812,7 @@ const GOALS_DATA = [
         i:'Assign the client a homework exercise in which he/she does an exposure exercise and records responses; review and reinforce progress, problem-solve obstacles.' },
       { o:'Learn and implement 3 thought-stopping techniques to manage intrusive, unwanted thoughts.',
         i:'Teach the client thought-stopping in which he/she internally voices the word "stop" immediately upon noticing unwanted trauma-related thoughts (or assign "Making Use of the Thought-Stopping Technique" in the Adult Psychotherapy Homework Planner, 2nd ed.).' },
-    ],
-    suggest: s => s.dim3.symptoms.some(x => /ptsd|trauma/i.test(x)),
+    ]
   },
   { id:'selfcare1', name:'Self-Care Deficits — Primary', section:'B',
     goals:[
@@ -4883,8 +4828,7 @@ const GOALS_DATA = [
         i:'Ask the client to identify a trusted individual from whom to obtain helpful feedback regarding daily hygiene; ask the client to identify desired self-care behaviors not currently present in repertoire.' },
       { o:'Cooperate with treatment for substance abuse and/or mental illness that interferes with the ability to care for self.',
         i:'Assess the client for substance abuse or severe mental illness that exacerbates poor self-care performance (or assign "Relating Self-Care Deficits to My Addiction" in the Addiction Treatment Homework Planner, 4th ed.).' },
-    ],
-    suggest: s => false,
+    ]
   },
   { id:'selfcare2', name:'Self-Care Deficits — Secondary', section:'B',
     goals:[
@@ -4901,8 +4845,7 @@ const GOALS_DATA = [
         i:'Examine problematic IADL areas with the client to identify any patterns of addictive behavior or cognitions that cause failure at independent functioning (or assign "Working Toward Independence" in the Addiction Treatment Homework Planner, 4th ed.).' },
       { o:'Attend 12-step meetings and other support groups.',
         i:'Review places, times, and locations of support groups for the client (e.g., 12-step meetings, religious groups, community agencies).' },
-    ],
-    suggest: s => false,
+    ]
   },
   { id:'selfharm', name:'Self-Harm', section:'B',
     goals:[
@@ -4920,8 +4863,7 @@ const GOALS_DATA = [
         i:'Explore how self-harm was used to escape from stress, physical and emotional pain, and boredom; confront the negative consequences of this pattern.' },
       { o:'Client will bring the current safety plan to weekly individual sessions to review with counselor.',
         i:'Clinician will review and process with client in weekly individual sessions any times the client experienced worsening depression and/or anger. Clinician will ask client to review which portions of the safety plan were used or ignored, and will work to strengthen resolve and update the plan with new skills or warning signs.' },
-    ],
-    suggest: s => s.dim3.symptoms.some(x => /self.harm|self.injur/i.test(x)),
+    ]
   },
   { id:'suicide', name:'Suicide Ideation', section:'B',
     goals:[
@@ -4940,8 +4882,7 @@ const GOALS_DATA = [
         i:'Review the client\'s role of importance to family and friends (or assign "Why Do I Matter and Who Cares?" in the Addiction Treatment Homework Planner, 4th ed.); confront minimization or disconnecting. Assign the client to write a list of positive people, places, and things in life.' },
       { o:'Verbalize an understanding of the 12-step attitude of gratitude; list five things to be grateful for each day.',
         i:'Teach the client about the 12-step concept of the attitude of gratitude; assign to list five things for which grateful each day.' },
-    ],
-    suggest: s => s.dim3.symptoms.some(x => /suicid/i.test(x)),
+    ]
   },
   { id:'resistance', name:'Treatment Resistance', section:'B',
     goals:[
@@ -4960,8 +4901,7 @@ const GOALS_DATA = [
         i:'Assess the client\'s position in the Stage of Change (see Substance Abuse Treatment and the Stages of Change by Conners, Donovan, and DiClemente); provide feedback of results.' },
       { o:'List times when addictive behavior led to negative consequences and the need for treatment.',
         i:'Help the client make a list of negative consequences of addiction that clearly demonstrate the need for treatment (or assign "Accepting the Need for Treatment" in the Addiction Treatment Homework Planner, 4th ed.).' },
-    ],
-    suggest: s => s.dim4.stage === 'precontemplation' || s.dim4.engagement === 'resistant',
+    ]
   },
 
   // ── SECTION C ──────────────────────────────────────
@@ -4983,8 +4923,7 @@ const GOALS_DATA = [
         i:'Teach the client about the importance of a daily program of recovery, including attending meetings, working with a sponsor, and helping others in the program.' },
       { o:'Learn and implement 3 skills to interrupt the relapse process.',
         i:'Teach the client relapse prevention skills (e.g., identifying triggers, using the HALT acronym, calling a sponsor, attending meetings); role-play high-risk situations and practice refusal skills.' },
-    ],
-    suggest: s => ['high','imminent'].includes(s.dim5.risk) || ['two_three','multiple'].includes(s.dim5.priorTx),
+    ]
   },
   { id:'environment', name:'Living Environment Deficiency', section:'C',
     goals:[
@@ -5003,8 +4942,7 @@ const GOALS_DATA = [
         i:'Help the client to develop a personal recovery plan that has all the elements necessary to recover from addictive behavior and the deficient living environment (or assign "What Would My Ideal Life Look Like?" in the Addiction Treatment Homework Planner, 4th ed.).' },
       { o:'Practice saying no to addictive and antisocial behavior in high-risk situations.',
         i:'Have the client role-play assertive responses to situations currently facing in life; assign to practice assertive expression of feelings, thoughts, and desires to others during the week.' },
-    ],
-    suggest: s => ['active_users','unsafe','unstable','homeless'].includes(s.dim6.living) || ['absent','using_peers','hostile'].includes(s.dim6.support) || s.dim6.envRisk === 'high_risk',
+    ]
   },
   { id:'parentchild', name:'Parent-Child Relational Problem', section:'C',
     goals:[
@@ -5023,8 +4961,7 @@ const GOALS_DATA = [
         i:'Assign the client to develop a written plan as to the time, place, and amount of time devoted to private, one-to-one communication with each family member each day.' },
       { o:'Make written plans to increase pleasurable activities spent by the parent and child.',
         i:'Assign the client to write a letter to each family member sharing feelings, and suggesting pleasurable activities they could engage in together during recovery.' },
-    ],
-    suggest: s => false,
+    ]
   },
   { id:'partner', name:'Partner Relational Conflicts', section:'C',
     goals:[
@@ -5043,8 +4980,7 @@ const GOALS_DATA = [
         i:'Assign the client a homework exercise to use and record newly learned communication skills (or assign "Communication Skills" in the Addiction Treatment Homework Planner, 4th ed.); process results in session.' },
       { o:'Learn and implement 3 problem-solving and conflict resolution skills.',
         i:'Assign the client a homework exercise to use and record newly learned problem-solving and conflict resolution skills; process results in session.' },
-    ],
-    suggest: s => false,
+    ]
   },
   { id:'peers', name:'Peer Group Negativity', section:'C',
     goals:[
@@ -5062,8 +4998,7 @@ const GOALS_DATA = [
         i:'Encourage and facilitate the client meeting a 12-step recovery program temporary sponsor, and discuss plans for recovery (or assign "Personal Recovery Planning" in the Addiction Treatment Homework Planner, 4th ed.).' },
       { o:'Make a list of peers who are positive and peers who are negative toward recovery efforts.',
         i:'Help the client to make a list of all peers who are positive or negative toward recovery; assist in planning how to avoid or cope with peers who are unsupportive or critical of recovery efforts.' },
-    ],
-    suggest: s => s.dim6.support === 'using_peers' || s.dim6.living === 'active_users',
+    ]
   },
 ];
 
@@ -5316,11 +5251,10 @@ function rebuildSection(section) {
   cats.forEach(cat => {
     if (!itpSelected[section].has(cat.id)) return;
     const letter = letters[letterIdx++];
-    const wasSuggested = cat.suggest(state);
 
     // chip
     const chip = document.createElement('span');
-    chip.className = 'itp-chip' + (wasSuggested ? ' itp-chip-suggested' : '');
+    chip.className = 'itp-chip';
     chip.innerHTML = `<b>${letter}.</b> ${cat.name} <button class="itp-chip-remove" title="Remove" onclick="itpSelected['${section}'].delete('${cat.id}');rebuildSection('${section}')">✕</button>`;
     chips.appendChild(chip);
 
@@ -7027,6 +6961,15 @@ function doReset() {
   if (itpPlaceholder) itpPlaceholder.style.display = 'flex';
   const itpCopyBtn = document.getElementById('itpCopyBtn');
   if (itpCopyBtn) itpCopyBtn.style.display = 'none';
+  const itpWarning = document.getElementById('itpSmartWarning');
+  if (itpWarning) itpWarning.classList.remove('visible');
+  const itpWarningList = document.getElementById('itpSmartWarningList');
+  if (itpWarningList) itpWarningList.innerHTML = '';
+
+  // Reset ASAM reference panel state
+  asamRefOpen = false;
+  document.getElementById('asamRefBody').style.display = 'none';
+  document.getElementById('asamRefToggle').textContent = '▾ expand';
 
   // Reset session note
   snClear();
