@@ -6345,7 +6345,11 @@ function submitFeedback() {
 
   const subject = encodeURIComponent('DocAssist Feedback');
   const encodedBody = encodeURIComponent(body);
-  window.open('mailto:joseph.bretzfelder@woodhavenohio.com?subject=' + subject + '&body=' + encodedBody, '_blank');
+  const a = document.createElement('a');
+  a.href = 'mailto:joseph.bretzfelder@woodhavenohio.com?subject=' + subject + '&body=' + encodedBody;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
 
   setTimeout(() => {
     document.getElementById('feedbackTool').value = '';
